@@ -1,14 +1,18 @@
-from Tables import Pool_Table
+from Tables import PoolTable
+import datetime
+import time
+localtime = time.localtime(time.time())
+print(localtime.tm_year)
 #-----------------------------Table_Manager_application-------------------------
-class Table_Manager_application: #new class
-    def __init__(self):#Table_Manager_application class initiator
-        self.pool_tables =[] #attribute that allows tables created to be pushed into
-        self.table_class = Pool_Table
+class Table_Manager_application:
+    def __init__(self):
+        self.pool_tables =[]
+        self.table_class = PoolTable
         self.present_user_options()
 
 
 
-    def present_user_options(self):#function presents users options calls functions
+    def present_user_options(self):
         print("************************************************************************************************")
         choice = int(input("1. Open New Table • 2. View Table All Tables • 3. Close Table • 4. update table • 5. Exit : "))
         print("************************************************************************************************")
@@ -22,17 +26,17 @@ class Table_Manager_application: #new class
             self.update_table_status()
         if choice == 5:
             self.exit_program()
-        # else:
-        #     print("invalid input.")
+        else:
+            if choice >= 6:
+                print("Invalid Input")
+                self.present_user_options()
 
-    def open_new_table(self): #function gives user input on hours to play and table name
+    def open_new_table(self):
 
         hours = int(input("Select number of hours to play: "))
         table_name = input("Please name your table: ")
 
-        new_table = self.table_class(table_name , "OPEN") #
-
-
+        new_table = self.table_class(table_name , False)
 
         if hours >= 8:
             print("Sorry! 8 Hour Maximum.")
@@ -48,31 +52,58 @@ class Table_Manager_application: #new class
         self.present_user_options()
 
 
-    def update_table_status(self): #function updates table
+    def update_table_status(self):
 
-        selected_table_name = input("enter table name to update ") #ask for user input
-        selected_table = None #gives table starting value
+        selected_table_name = input("enter table name to update ")
+        selected_table = None
 
-        for the_table in self.pool_tables: #creates loop for tables
+        for the_table in self.pool_tables:
 
             if the_table.table_id == selected_table_name:
                 selected_table = the_table
 
         if selected_table != None:
 
-                print('table was ' + selected_table.table_status)
-                if selected_table.table_status == "OPEN":
-                    selected_table.table_status = "OCCUPIED"
+                print('was table occupied ' , selected_table.is_occupied)
+                if selected_table.is_occupied == False:
+                    selected_table.is_occupied = True
+
+                    time_values = datetime.datetime.now()
+                    time_log = time.asctime( time.localtime(time.time()))
+
+
+                    selected_table.start_time = time_values
+                    selected_table.start_time_string = time_log
+
                 else:
-                    selected_table.table_status = "OPEN"
-                print('table is now ' + selected_table.table_status)
+
+                    selected_table.is_occupied = False
+                    time_values = datetime.datetime.now()
+                    time_log = time.asctime( time.localtime(time.time()))
+
+                    selected_table.end_time = time_values
+                    selected_table.end_time_string = time_log
+                    a = selected_table.start_time.replace(microsecond=0)
+                    b = selected_table.end_time.replace(microsecond=0)
+                    total_time = b - a
+
+                    print(total_time)
+                    hours_seconds = divmod(total_time.days * 86400 + total_time.seconds, 60)
+                    total_minutes = hours_seconds[0]*60 + hours_seconds[1]
+                    print(total_minutes)
+                    file = open(“testfile.txt”, “r”)
+                    for i in range(2):
+                        f.write("Appended line %d\r\n" % (i+1))
+
+                    f.close
+                print('table is occupied' , selected_table.is_occupied)
 
         self.present_user_options()
 
 
     def view_tables_and_Status(self):
         # print(pool_tables(status))
-        print(self.pool_tables)
+
         for table in self.pool_tables:
             print(table)
             print("\n")
@@ -80,9 +111,11 @@ class Table_Manager_application: #new class
         self.present_user_options()
 
     def close_table(self):
-        pass
+        selected_table_name = input("enter the table name to close: ")
+        selected_table = the_table
+
 
     def exit_program(self):
-        pass
+        print("Goodbye.")
 
-table_manager = Table_Manager_application() #creates instance
+table_manager = Table_Manager_application()

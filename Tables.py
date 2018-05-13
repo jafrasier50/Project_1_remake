@@ -1,15 +1,17 @@
 
 
 
-class Pool_Table:
+class PoolTable:
     def __init__(self, table_id, table_status):
         self.table_id = table_id
-        self.table_status = table_status
+        self.is_occupied = table_status
+        self.start_time_string = None
+        self.end_time_string = None
+        self.start_time = None
+        self.end_time = None
+    
 
-    def table_status(self):
-        pass
-        # table_occupied = True
-        # table_open = False
+
 
     def __repr__(self):
-        return (f"table id: {self.table_id} table satus: {self.table_status}")
+        return (f"Table ID: {self.table_id} || Table Satus: {self.is_occupied} || Start Time: {self.start_time_string} || End Time: {self.end_time_string}|| Duration:  ")
