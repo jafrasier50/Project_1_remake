@@ -10,12 +10,10 @@ class Table_Manager_application:
         self.table_class = PoolTable
         self.present_user_options()
 
-
-
     def present_user_options(self):
-        print("************************************************************************************************")
-        choice = int(input("1. Open New Table • 2. View Table All Tables • 3. Close Table • 4. update table • 5. Exit : "))
-        print("************************************************************************************************")
+        print("**********************************************************************************************************")
+        choice = int(input("1. Open New Table • 2. View Table All Tables • 3. Close Table • 4. Start//End table • 5. Exit : "))
+        print("**********************************************************************************************************")
         if choice == 1:
             self.open_new_table()
         if choice == 2:
@@ -46,18 +44,12 @@ class Table_Manager_application:
             print("Table already exist, please enter a different name!")
             self.open_new_table()
 
-
-
         self.pool_tables.append(new_table)
-
-
-
         self.present_user_options()
-
 
     def update_table_status(self):
 
-        selected_table_name = input("enter table name to update: ")
+        selected_table_name = input("enter table name to Start//End: ")
         selected_table = None
 
         for the_table in self.pool_tables:
@@ -99,8 +91,6 @@ class Table_Manager_application:
                     self.write_to_file(transaction)
                 print('table is occupied' , selected_table.is_occupied)
 
-
-
         self.present_user_options()
 
     def write_to_file(self, transaction):
@@ -108,10 +98,7 @@ class Table_Manager_application:
        file.write(transaction)
        file.close()
 
-
     def view_tables_and_Status(self):
-        # print(pool_tables(status))
-
         for table in self.pool_tables:
             print(table)
             print("\n")
@@ -121,7 +108,6 @@ class Table_Manager_application:
     def close_table(self):
         selected_table_name = input("enter the table name to close: ")
         selected_table = the_table
-
 
     def exit_program(self):
         print("Goodbye.")
