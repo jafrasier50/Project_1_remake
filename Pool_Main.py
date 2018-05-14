@@ -33,17 +33,20 @@ class Table_Manager_application:
 
     def open_new_table(self):
 
-        hours = int(input("Select number of hours to play: "))
+        name_unique = True
         table_name = input("Please name your table: ")
+        for table in self.pool_tables:
+            if table.table_id == table_name:
+                name_unique = False
 
-        new_table = self.table_class(table_name , False)
-
-        if hours >= 8:
-            print("Sorry! 8 Hour Maximum.")
+        if name_unique == True:
+            new_table = self.table_class(table_name , False)
+            print(f"You have added {table_name} at $30 per hour. Enjoy your game!")
         else:
-            print(f"You have selected {hours} hours at $30 per hour.")
+            print("Table already exist, please enter a different name!")
+            self.open_new_table()
 
-        new_table.hours = hours
+
 
         self.pool_tables.append(new_table)
 
@@ -54,7 +57,7 @@ class Table_Manager_application:
 
     def update_table_status(self):
 
-        selected_table_name = input("enter table name to update ")
+        selected_table_name = input("enter table name to update: ")
         selected_table = None
 
         for the_table in self.pool_tables:
