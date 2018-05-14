@@ -86,19 +86,24 @@ class Table_Manager_application:
                     a = selected_table.start_time.replace(microsecond=0)
                     b = selected_table.end_time.replace(microsecond=0)
                     total_time = b - a
+                    selected_table.total_time = total_time
 
                     print(total_time)
                     hours_seconds = divmod(total_time.days * 86400 + total_time.seconds, 60)
                     total_minutes = hours_seconds[0]*60 + hours_seconds[1]
                     print(total_minutes)
-                    file = open(“testfile.txt”, “r”)
-                    for i in range(2):
-                        f.write("Appended line %d\r\n" % (i+1))
-
-                    f.close
+                    transaction = f"session table: {selected_table.table_id} | session start: {selected_table.start_time_string} | session end: {selected_table.end_time_string} | duration: {str(total_time)} \r\n"
+                    self.write_to_file(transaction)
                 print('table is occupied' , selected_table.is_occupied)
 
+
+
         self.present_user_options()
+
+    def write_to_file(self, transaction):
+       file = open('pool_log.txt','a+')
+       file.write(transaction)
+       file.close()
 
 
     def view_tables_and_Status(self):
